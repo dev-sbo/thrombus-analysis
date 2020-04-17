@@ -1,4 +1,9 @@
-print("Blue processing");
+print("DAPI Thrombus processing");
+
+// Retrieve directory path and image name
+img_dir = getDirectory ("image");
+img_title = getTitle();
+img_name = replace(img_title, ".tif", "");
 
 // Pre processing
 // 1/ Remove rectangle with the legend
@@ -35,3 +40,9 @@ run("Remove Outliers...", "radius=3 threshold=50 which=Bright");
 run("Dilate");
 print("End dilate");
 run("Analyze Particles...", "pixel show=[Overlay Masks] display clear");
+selectWindow("Results");
+result_dir = img_dir + "DAPI_thrombus_results/";
+File.makeDirectory(result_dir);
+print(result_dir);
+
+saveAs("Results", result_dir + img_name + ".csv");
