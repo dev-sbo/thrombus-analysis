@@ -1,0 +1,37 @@
+print("Blue processing");
+
+// Pre processing
+// 1/ Remove rectangle with the legend
+// 2/ Move from RGB 8bit to 8bit (B&W)
+
+// Create new image to store the pre processing image
+run("Duplicate...", " ");
+copy = getImageID();
+selectImage(copy);
+
+// Remove rectangle with the legend
+run("8-bit");
+//makeRectangle(1124, 888, 76, 56);
+//run("Clear");
+// Convert color to 8bit Black and White
+// Apply normalization
+run("Duplicate...", " ");
+copy = getImageID();
+selectImage(copy);
+run("Enhance Contrast...", "saturated=0.3 normalize");
+print("Enhance contrast");
+
+// Threshold Image 
+run("Duplicate...", " ");
+copy = getImageID();
+selectImage(copy);
+setAutoThreshold("Moments dark");
+setThreshold(50, 255);
+setOption("BlackBackground", true);
+run("Convert to Mask");
+//run("Close");
+print("Mask generated")
+run("Remove Outliers...", "radius=3 threshold=50 which=Bright");
+run("Dilate");
+print("End dilate");
+run("Analyze Particles...", "pixel show=[Overlay Masks] display clear");
