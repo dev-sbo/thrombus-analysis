@@ -1,0 +1,7 @@
+# Remove all DS Store folders
+**.DS_Store
+
+# Remove the results of the examples
+./DAPI_thrombus/DAPI_thrombus_results
+
+

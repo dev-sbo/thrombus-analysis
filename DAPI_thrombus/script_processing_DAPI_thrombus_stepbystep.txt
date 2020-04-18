@@ -1,0 +1,59 @@
+// Description: Script to isolate blue dot points, return their coordinates
+// Author: Segolene
+// Date: 17 April 2020
+
+print("DAPI Thrombus processing");
+
+// Retrieve directory path and image name
+img_dir = getDirectory ("image");
+img_title = getTitle();
+img_name = replace(img_title, ".tif", "");
+
+// Create new image to store the pre processing image
+run("Duplicate...", "title=black_and_white_8bit.tif");
+copy = getImageID();
+selectImage(copy);
+
+// Pre processing: Move from RGB 8bit to 8bit (B&W)
+run("8-bit");
+print("Step 1: Convert RGB-8bit image into 8bit Black and White image")
+
+// Apply normalization
+run("Duplicate...", "title=normalized.tif");
+copy = getImageID();
+selectImage(copy);
+run("Enhance Contrast...", "saturated=0.3 normalize");
+print("Step 2: Normalized the image");
+
+// Threshold: Convert Image into binary mask 
+run("Duplicate...", "title=mask.tif");
+copy = getImageID();
+selectImage(copy);
+setAutoThreshold("Moments dark");
+setThreshold(50, 255);
+setOption("BlackBackground", true);
+run("Convert to Mask");
+print("Step 3: Apply threshold to generate a mask")
+
+// Post processing of the mask
+run("Remove Outliers...", "radius=3 threshold=50 which=Bright");
+run("Dilate");
+print("Step4: Post processing to clean the mask: remove outliers and dilation to clean borders");
+
+// Locate cells and measure its area
+run("Analyze Particles...", "pixel show=[Overlay Masks] display clear");
+print("Step5: Analyze the particles. Identify their location and area.");
+
+// Save results (.CSV)
+selectWindow("Results");
+result_dir = img_dir + "DAPI_thrombus_results/";
+result_file = result_dir + img_name + ".csv";
+File.makeDirectory(result_dir);
+print("Save results here: " + result_file );
+saveAs("Results", result_file );
+
+// Save results (MASK)
+selectImage(copy);
+mask_file = result_dir + img_name + "_mask.tif";
+saveAs("mask.tif", mask_file);
+print("Save mask here: " + mask_file);
