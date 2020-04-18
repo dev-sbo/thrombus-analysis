@@ -44,10 +44,16 @@ print("Step4: Post processing to clean the mask: remove outliers and dilation to
 run("Analyze Particles...", "pixel show=[Overlay Masks] display clear");
 print("Step5: Analyze the particles. Identify their location and area.");
 
-// Save results
+// Save results (.CSV)
 selectWindow("Results");
 result_dir = img_dir + "DAPI_thrombus_results/";
 result_file = result_dir + img_name + ".csv";
 File.makeDirectory(result_dir);
 print("Save results here: " + result_file );
 saveAs("Results", result_file );
+
+// Save results (MASK)
+selectImage(copy);
+mask_file = result_dir + img_name + "_mask.tif";
+saveAs("mask.tif", mask_file);
+print("Save mask here: " + mask_file);
