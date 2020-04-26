@@ -46,14 +46,21 @@ print("Step5: Analyze the particles. Identify their location and area.");
 
 // Save results (.CSV)
 selectWindow("Results");
-result_dir = img_dir + "DAPI_thrombus_results/";
+result_dir = img_dir + "thrombus_DAPI_results/";
 result_file = result_dir + img_name + ".csv";
 File.makeDirectory(result_dir);
 print("Save results here: " + result_file );
 saveAs("Results", result_file );
+run("Close" );
 
 // Save results (MASK)
 selectImage(copy);
 mask_file = result_dir + img_name + "_mask.tif";
 saveAs("mask.tif", mask_file);
-print("Save mask here: " + mask_file);
+print("Save mask here: " + result_file);
+
+// Close all windows once finished
+close();
+close();
+close();
+close();

@@ -2,6 +2,6 @@
 **.DS_Store
 
 # Remove the results of the examples
-./DAPI_thrombus/DAPI_thrombus_results
+./DAPI_thrombus/thrombus_DAPI_results
 
 
